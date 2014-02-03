@@ -14,7 +14,7 @@ module.exports = {
     register: function (plugin, options, next) {
 
         plugin.ext('onPreHandler', function (req, next) {
-            if (req.payload.token !== options.token) {
+            if (!req.payload || req.payload.token !== options.token) {
                 next(hapi.error.unauthorized('Invalid token'));
                 return;
             }
@@ -35,7 +35,7 @@ module.exports = {
         plugin.events.on('log', function (event, tags) {
             console.log(event);
         });
-        
+
         next();
     }
 
