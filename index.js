@@ -4,6 +4,7 @@ var hapi = require('hapi'),
     pkg = require('./package'),
     chivebot = require('./lib/chivebot');
 
+
 module.exports = {
 
     name: pkg.name,
@@ -31,6 +32,10 @@ module.exports = {
         });
 
 
+        plugin.events.on('log', function (event, tags) {
+            console.log(event);
+        });
+        
         next();
     }
 
