@@ -1,0 +1,20 @@
+{
+  "name": "chivebot",
+  "version": "0.0.0",
+  "description": "ERROR: No README.md file found!",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "hapi": "~2.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": "",
+  "author": "Erik Toth <totherik@gmail.com>",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
