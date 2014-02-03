@@ -1,0 +1,13 @@
+{
+    "servers": [
+        {
+            "host": "localhost",
+            "port": 8000
+        }
+    ],
+    "plugins": {
+        "chivebot": {
+            "token": ""
+        }
+    }
+}
