@@ -14,10 +14,21 @@ module.exports = {
     register: function (plugin, options, next) {
 
         plugin.ext('onPreHandler', function (req, next) {
-            if (!req.payload || req.payload.token !== options.token) {
+            if (!req.payload) {
+                next(hapi.error.notFound());
+                return;
+            }
+
+            if (req.payload.token !== options.token) {
                 next(hapi.error.unauthorized('Invalid token'));
                 return;
             }
+
+            if (req.payload.user_name === options.user_name) {
+                next({ text: '' });
+                return;
+            }
+
             next();
         });
 
