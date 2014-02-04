@@ -7,10 +7,10 @@
     "test": "test"
   },
   "dependencies": {
-    "cool-ascii-faces": "~1.3.2"
+    "minimist": "~0.0.5"
   },
   "peerDependencies": {
-      "hapi": "~2.1"
+    "hapi": "~2.1"
   },
   "scripts": {
     "test": "tape test/*.js"

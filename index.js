@@ -12,8 +12,11 @@ module.exports = {
     version: pkg.version,
 
     register: function (plugin, options, next) {
+        var bot = chivebot.create(options);
 
         plugin.ext('onPreHandler', function (req, next) {
+            var trigger, text;
+
             if (!req.payload) {
                 next(hapi.error.notFound());
                 return;
@@ -29,16 +32,22 @@ module.exports = {
                 return;
             }
 
+            trigger = options['trigger_word'];
+            text = req.payload.text;
+            if (trigger && text.indexOf(trigger) === 0) {
+                req.payload.text = text.slice(text.indexOf(' ') + 1);
+            }
+
             next();
         });
 
 
         plugin.route({
             method: 'POST',
-            path: '/chivebot',
+            path: '/',
             vhost: options.vhost,
             config: {
-                handler: chivebot
+                handler: bot.handler
             }
         });
 
@@ -49,9 +58,7 @@ module.exports = {
 
 
         plugin.expose({
-            registerCommand: function (command, fn) {
-                console.log(command, fn);
-            }
+            registerCommand: bot.registerCommand.bind(bot)
         });
 
         next();
