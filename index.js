@@ -24,7 +24,7 @@ module.exports = {
                 return;
             }
 
-            if (req.payload.user_name === options.user_name) {
+            if (req.payload['user_name'] === options['user_name']) {
                 next({ text: '' });
                 return;
             }
@@ -45,6 +45,13 @@ module.exports = {
 
         plugin.events.on('log', function (event, tags) {
             console.log(event);
+        });
+
+
+        plugin.expose({
+            registerCommand: function (command, fn) {
+                console.log(command, fn);
+            }
         });
 
         next();
