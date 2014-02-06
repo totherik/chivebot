@@ -1,6 +1,6 @@
 ### chivebot
 
-A pluggable slack bot.
+A pluggable slack bot based on Outgoing WebHooks.
 
 #### Creating a custom bot
 First, declare your dependencies
