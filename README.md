@@ -2,6 +2,10 @@
 
 A pluggable slack bot based on Outgoing WebHooks.
 
+![chivebot-cloudeasy](examples/img/chivebot-cloudeasy.png "chivebot-cloudeasy plugin")
+![chivebot-coolfaces](examples/img/chivebot-coolfaces.png "chivebot-coolfaces plugin")
+![chivebot-weather](examples/img/chivebot-weather.png "chivebot-weather plugin")
+
 #### Creating a custom bot
 First, declare your dependencies
 ```bash
