@@ -1,14 +1,12 @@
 {
   "name": "chivebot",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A slack bot.",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
-  "dependencies": {
-
-  },
+  "dependencies": {},
   "peerDependencies": {
     "hapi": "~2.1"
   },
