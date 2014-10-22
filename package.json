@@ -7,14 +7,11 @@
     "example": "example"
   },
   "dependencies": {
-    "hapi": "^7.0.0",
     "hoek": "^2.8.0",
     "joi": "^4.7.0",
     "minimist": "^1.1.0"
   },
   "scripts": {
-    "test": "tape test/*.js",
-    "debug": "hapi -c ./example/config.json"
   },
   "repository": {
     "type": "git",
