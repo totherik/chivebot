@@ -1,67 +1,90 @@
 'use strict';
 
-var hapi = require('hapi'),
-    pkg = require('./package'),
-    chivebot = require('./lib/chivebot');
+var Joi = require('joi');
+var Hoek = require('hoek');
+var Hapi = require('hapi');
+var Package = require('./package');
+var Chivebot = require('./lib/chivebot');
 
 
-module.exports = {
+var internals = {
 
-    name: pkg.name,
+    defaults: {},
 
-    version: pkg.version,
+    authorize: function (token, username) {
+        return function authorize(req, reply) {
 
-    register: function (plugin, options, next) {
-        var bot = chivebot.create(options);
-
-        plugin.ext('onPreHandler', function (req, next) {
-            var trigger, text;
-
-            if (!req.payload) {
-                next(hapi.error.notFound());
+            if (req.payload.token !== token) {
+                // Must have valid token
+                reply(Hapi.error.unauthorized('Not allowed.'));
                 return;
             }
 
-            if (req.payload.token !== options.token) {
-                next(hapi.error.unauthorized('Invalid token'));
+            if (req.payload['user_name'] === username) {
+                // Can't talk to itself.
+                reply({ text: '' }).takeover();
                 return;
             }
 
-            if (req.payload['user_name'] === options['user_name']) {
-                next({ text: '' });
-                return;
-            }
+            // Keep the token private
+            delete req.payload.token;
+            reply();
+        };
+    },
 
-            trigger = options['trigger_word'];
-            text = req.payload.text;
+    sanitize: function (trigger) {
+        return function sanitize(req, reply) {
+            // Remove trigger word from text payload.
+            var text = req.payload.text;
             if (trigger && text.indexOf(trigger) === 0) {
                 req.payload.text = text.slice(text.indexOf(' ') + 1);
             }
 
-            next();
-        });
-
-
-        plugin.route({
-            method: 'POST',
-            path: '/',
-            vhost: options.vhost,
-            config: {
-                handler: bot.handler
-            }
-        });
-
-
-        plugin.events.on('log', function (event, tags) {
-            console.log(event);
-        });
-
-
-        plugin.expose({
-            registerCommand: bot.registerCommand.bind(bot)
-        });
-
-        next();
+            reply();
+        }
     }
 
+};
+
+
+exports.register = function(plugin, options, next) {
+    var bot;
+
+    Hoek.assert(typeof options === 'object', 'options must provided');
+    Hoek.assert(typeof options['user_name'] === 'string', 'user_name must be a string');
+    Hoek.assert(typeof options['trigger_word'] === 'string', 'trigger_word must be a string');
+    Hoek.assert(typeof options['token'] === 'string', 'token must be a string');
+
+    options = Hoek.applyToDefaults(internals.defaults, Hoek.clone(options || {}));
+
+    bot = Chivebot.create(options);
+
+    plugin.expose('registerCommand', function () {
+        bot.registerCommand.apply(bot, arguments);
+    });
+
+    plugin.route({
+        method: 'POST',
+        path: '/',
+        config: {
+            pre: [
+                internals.authorize(options['token'], options['user_name']),
+                internals.sanitize(options['trigger_word'])
+            ],
+            validate: {
+                payload: Joi.object().keys({
+                    token: Joi.string().token().required(),
+                    'user_name': Joi.string().required(),
+                    text: Joi.string().required()
+                })
+            },
+            handler: bot.handler
+        }
+    });
+
+    next();
+};
+
+exports.register.attributes = {
+    pkg: Package
 };
