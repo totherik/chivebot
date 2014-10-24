@@ -77,7 +77,7 @@ exports.register = function(plugin, options, next) {
                     'token': Joi.string().token().required(),
                     'team_id': Joi.string(),
                     'team_domain': Joi.string(),
-                    'service_id': Join.string(),
+                    'service_id': Joi.string(),
                     'channel_id': Joi.string(),
                     'channel_name': Joi.string(),
                     'timestamp': Joi.string(),
