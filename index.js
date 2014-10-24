@@ -74,8 +74,14 @@ exports.register = function(plugin, options, next) {
             validate: {
                 payload: Joi.object().keys({
                     token: Joi.string().token().required(),
+                    'team_id': Joi.string(),
+                    'channel_id': Joi.string(),
+                    'channel_name': Joi.string(),
+                    'timestamp': Joi.any(),
+                    'user_id': Joi.string(),
                     'user_name': Joi.string().required(),
-                    text: Joi.string().required()
+                    text: Joi.string().required(),
+                    'trigger_word': Joi.string()
                 })
             },
             handler: bot.handler
