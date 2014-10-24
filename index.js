@@ -64,11 +64,6 @@ exports.register = function(plugin, options, next) {
         bot.registerCommand.apply(bot, arguments);
     });
 
-    plugin.ext('onPreAuth', function (req, reply) {
-        console.log(req);
-        reply();
-    });
-
     plugin.route({
         method: 'POST',
         path: '/',
@@ -77,6 +72,7 @@ exports.register = function(plugin, options, next) {
                 internals.authorize(options['token'], options['user_name']),
                 internals.sanitize(options['trigger_word'])
             ],
+            /*
             validate: {
                 payload: Joi.object().keys({
                     token: Joi.string().token().required(),
@@ -90,6 +86,7 @@ exports.register = function(plugin, options, next) {
                     'trigger_word': Joi.string()
                 })
             },
+            */
             handler: bot.handler
         }
     });
