@@ -64,6 +64,11 @@ exports.register = function(plugin, options, next) {
         bot.registerCommand.apply(bot, arguments);
     });
 
+    plugin.ext('onPreAuth', function (req, reply) {
+        console.log(req);
+        reply();
+    });
+
     plugin.route({
         method: 'POST',
         path: '/',
@@ -78,7 +83,7 @@ exports.register = function(plugin, options, next) {
                     'team_id': Joi.string(),
                     'channel_id': Joi.string(),
                     'channel_name': Joi.string(),
-                    'timestamp': Joi.any(),
+                    'timestamp': Joi.string(),
                     'user_id': Joi.string(),
                     'user_name': Joi.string().required(),
                     text: Joi.string().required(),
