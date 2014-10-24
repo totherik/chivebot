@@ -83,7 +83,7 @@ exports.register = function(plugin, options, next) {
                     'user_name': Joi.string().required(),
                     text: Joi.string().required(),
                     'trigger_word': Joi.string()
-                }).any()
+                })
             },
             handler: bot.handler
         }
