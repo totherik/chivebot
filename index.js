@@ -72,21 +72,21 @@ exports.register = function(plugin, options, next) {
                 internals.authorize(options['token'], options['user_name']),
                 internals.sanitize(options['trigger_word'])
             ],
-            /*
             validate: {
                 payload: Joi.object().keys({
-                    token: Joi.string().token().required(),
+                    'token': Joi.string().token().required(),
                     'team_id': Joi.string(),
+                    'team_domain': Joi.string(),
+                    'service_id': Join.string(),
                     'channel_id': Joi.string(),
                     'channel_name': Joi.string(),
                     'timestamp': Joi.string(),
                     'user_id': Joi.string(),
                     'user_name': Joi.string().required(),
-                    text: Joi.string().required(),
+                    'text': Joi.string().required(),
                     'trigger_word': Joi.string()
-                })
+                }).unknown(true)
             },
-            */
             handler: bot.handler
         }
     });
