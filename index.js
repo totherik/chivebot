@@ -14,7 +14,6 @@ var internals = {
     authorize: function (token, username) {
         return function authorize(req, reply) {
 
-            console.log(req.payload);
             if (req.payload.token !== token) {
                 // Must have valid token
                 reply(Hapi.error.unauthorized('Not allowed.'));
